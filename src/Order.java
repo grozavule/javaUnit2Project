@@ -75,21 +75,43 @@ public class Order {
                 System.out.println("Would you like to continue ordering? (Y or N)");
                 placeOrder = Main.input.nextLine();
                 if(!placeOrder.equalsIgnoreCase("Y") && !placeOrder.equalsIgnoreCase("YES")){
-                    System.out.println("Your order total: " + this.calculateOrderTotal(order));
-                    System.out.println("Thank you for your business.");
+                    //display the receipt
+                    System.out.println("ORDER RECEIPT:");
+                    this.displayReceipt(order);
                     ordering = false;
+
+                    //create the sales data file and write each ordered item to it
+                    new CreateFile();
+                    new WriteToFile(order);
                 }
             }
+
         } else {
             System.out.println("Have a nice day then.");
             System.exit(0);
         }
     }
 
+    private String setLineItemSpacing(String itemDescription){
+        String spacing = "\t\t";
+        if(itemDescription.length() < 16){
+            spacing = "\t\t\t";
+        }
+        return spacing;
+    }
+
     private void displayMenu(ArrayList<? extends MenuItem> menu){
         for(MenuItem item : menu){
-            System.out.println(this.menuItemCounter++ + "\t" + item.getItemName() + "\t\t" + item.getPrice());
+            System.out.println(this.menuItemCounter++ + "\t" + item.getItemName() + setLineItemSpacing(item.getItemName()) + item.getPrice());
         }
+    }
+
+    private void displayReceipt(ArrayList<? extends MenuItem> order){
+        System.out.println("ITEM DESCRIPTION\t\tUNIT PRICE");
+        for(MenuItem item : order){
+            System.out.println(item.getItemName() + setLineItemSpacing(item.getItemName()) + item.getPrice());
+        }
+        System.out.println("Subtotal:\t\t\t" + this.calculateOrderTotal(order));
     }
 
     private double calculateOrderTotal(ArrayList<? extends MenuItem> order){

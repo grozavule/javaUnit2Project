@@ -136,6 +136,11 @@ class RedVelvetCupcake extends Cupcake {
         super(itemName);
     }
 
+    public RedVelvetCupcake(String itemName, double price){
+        super(itemName);
+        super.setPrice(price);
+    }
+
     public RedVelvetCupcake(RedVelvetCupcake redVelvetCupcake){
         super(redVelvetCupcake);
     }
